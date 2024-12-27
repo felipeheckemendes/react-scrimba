@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-import { getRecipeFromChefClaude } from "./ai";
+import { getRecipeFromChefClaude } from "../../ai";
 
 import ClaudeRecipe from "./ClaudeRecipe";
 import IngredientsList from "./IngredientsList";
@@ -11,6 +11,7 @@ export default function Main() {
 
   // STATE: recipe Shown?
   const [recipeShown, setRecipeShown] = useState(false);
+  const [recipe, setRecipe] = useState("No recipe to display");
 
   // HANDLER: ingredient addition submission
   const submitHandler = function (event) {
@@ -21,10 +22,16 @@ export default function Main() {
     event.currentTarget.reset();
   };
 
-  // HANDLER: toggle recipe shown
-  const toggleRecipe = function (event) {
+  // HANDLER: Show recipe
+  const getAndShowRecipe = async function (event) {
     event.preventDefault();
-    setRecipeShown((prevRecipeShown) => !prevRecipeShown);
+    setRecipe("Generating recipe... please wait...");
+    setRecipeShown((prevRecipeShown) =>
+      prevRecipeShown ? prevRecipeShown : !prevRecipeShown
+    );
+    const recipeMarkdown = await getRecipeFromChefClaude(ingredients);
+    if (recipeMarkdown) setRecipe(recipeMarkdown);
+    else setRecipe("Error generating recipe. Please try again.");
   };
 
   // RETURN HTML
@@ -43,11 +50,11 @@ export default function Main() {
       {ingredients.length > 0 ? (
         <IngredientsList
           ingredients={ingredients}
-          toggleRecipe={toggleRecipe}
+          getAndShowRecipe={getAndShowRecipe}
         />
       ) : null}
 
-      {recipeShown ? <ClaudeRecipe /> : null}
+      {recipeShown ? <ClaudeRecipe recipeBody={recipe} /> : null}
     </main>
   );
 }

@@ -1,5 +1,6 @@
+/* eslint-disable react/prop-types */
 export default function IngredientsList(props) {
-  const { ingredients, toggleRecipe } = props;
+  const { ingredients, getAndShowRecipe } = props;
 
   // Generate React objects (elements) from array
   let ingredientsElements = ingredients.map(function (ingredient) {
@@ -18,7 +19,7 @@ export default function IngredientsList(props) {
             <h3>Ready for a recipe?</h3>
             <p>Generate a recipe from your list of ingredients.</p>
           </div>
-          <button onClick={toggleRecipe}>Get a recipe</button>
+          <button onClick={getAndShowRecipe}>Get a recipe</button>
         </div>
       ) : null}
     </section>

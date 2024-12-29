@@ -1,6 +1,6 @@
 /* eslint-disable react/prop-types */
 export default function IngredientsList(props) {
-  const { ingredients, getAndShowRecipe } = props;
+  const { ingredients, getAndShowRecipe, reference } = props;
 
   // Generate React objects (elements) from array
   let ingredientsElements = ingredients.map(function (ingredient) {
@@ -15,7 +15,7 @@ export default function IngredientsList(props) {
       </ul>
       {ingredientsElements.length >= 3 ? (
         <div className="get-recipe-container">
-          <div>
+          <div ref={reference}>
             <h3>Ready for a recipe?</h3>
             <p>Generate a recipe from your list of ingredients.</p>
           </div>
